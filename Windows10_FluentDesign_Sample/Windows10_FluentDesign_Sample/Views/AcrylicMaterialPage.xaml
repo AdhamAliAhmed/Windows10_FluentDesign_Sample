@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:effects="clr-namespace:Windows10_FluentDesign_Sample.Effects"
+             xmlns:converters="clr-namespace:Windows10_FluentDesign_Sample.BindingConverters"
+             xmlns:behaviors="clr-namespace:Windows10_FluentDesign_Sample.Behaviors"
+             xmlns:customcontrols="clr-namespace:Windows10_FluentDesign_Sample.CustomControls"
+             x:Class="Windows10_FluentDesign_Sample.Views.AcrylicMaterialPage">
+    <Grid  ColumnSpacing="20">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Label">
+                    <Setter Property="VerticalOptions" Value="Center"/>
+                </Style>
+                <Style TargetType="Entry">
+                    <Setter Property="MaxLength" Value="3"/>
+                    <Setter Property="Keyboard" Value="Numeric"/>
+                </Style>
+                <Style x:Key="colorBoxView" TargetType="BoxView">
+                    <Setter Property="HorizontalOptions" Value="Center"/>
+                    <Setter Property="VerticalOptions" Value="Center"/>
+                    <Setter Property="WidthRequest" Value="25"/>
+                    <Setter Property="HeightRequest" Value="25"/>
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <BoxView Grid.RowSpan="3" Grid.ColumnSpan="2"
+                 effects:AcrylicMaterial.BackgroundSource="HostBackdrop" 
+                 effects:AcrylicMaterial.FallbackColor="White" 
+                 effects:AcrylicMaterial.TintColor="WhiteSmoke"
+                 effects:AcrylicMaterial.TintOpacity="0.7">
+            <BoxView.Effects>
+                <effects:AcrylicMaterialEffect/>
+            </BoxView.Effects>
+        </BoxView>
+
+        <Grid x:Name="image" Grid.Row="1" RowSpacing="25" Margin="25">
+            <Image Source="Assets/windows_10_light_and_mirror_background.png" Aspect="AspectFill">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                                 Binding="{Binding Source={x:Reference backgroundSourcePicker}, Path=SelectedItem}"
+                                 Value="HostBackdrop">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+            <BoxView Margin="15"
+                     IsVisible="{Binding Source={x:Reference enableSwitch}, Path= IsToggled}"
+                     effects:AcrylicMaterial.BackgroundSource="{Binding BackgroundSource, Mode=TwoWay}" 
+                     effects:AcrylicMaterial.FallbackColor="{Binding FallbackColor, Mode=TwoWay}" 
+                     effects:AcrylicMaterial.TintColor="{Binding TintColor, Mode=TwoWay}"
+                     effects:AcrylicMaterial.TintOpacity="{Binding TintOpacity, Mode=TwoWay}">
+                <BoxView.Effects>
+                    <effects:AcrylicMaterialEffect/>
+                </BoxView.Effects>
+            </BoxView>
+        </Grid>
+
+        <Grid x:Name="controlPanel" Grid.Row="1" Grid.Column="1" ColumnSpacing="10" Padding="25" Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.ColumnSpan="3" Text="Control panel" HorizontalOptions="Center" FontSize="Medium" Margin="0,-15,0,15"/>
+
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="25">
+                <Label Text="Enable"/>
+                <Switch x:Name="enableSwitch" IsToggled="True"/>
+            </StackLayout>
+
+            <Label Grid.Row="2" Text="Tint opacity"/>
+            <Slider x:Name="tintOpacitySlider" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding TintOpacity, Mode=TwoWay}"/>
+            <Label Grid.Row="2" Grid.Column="2" Text="{Binding TintOpacity}"/>
+
+            <Label Grid.Row="3" Text="Tint color"/>
+            <StackLayout Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                <Entry Placeholder="R" Text="{Binding TintColorR, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:NumbersEntryBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="G" Text="{Binding TintColorG, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:NumbersEntryBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="B" Text="{Binding TintColorB, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:NumbersEntryBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+                <BoxView Grid.Row="2" BackgroundColor="{Binding TintColor}" Style="{StaticResource colorBoxView}"/>
+            </StackLayout>
+
+            <Label Grid.Row="4" Text="Fallback color"/>
+            <StackLayout Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                <Entry Placeholder="R" Text="{Binding FallbackColorR, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:NumbersEntryBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="G" Text="{Binding FallbackColorG, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:NumbersEntryBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="B" Text="{Binding FallbackColorB, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:NumbersEntryBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+                <BoxView Grid.Row="3" BackgroundColor="{Binding FallbackColor}" Style="{StaticResource colorBoxView}"/>
+            </StackLayout>
+
+            <Label Grid.Row="5" Text="Background source"/>
+            <Picker x:Name="backgroundSourcePicker" Grid.Row="5" Grid.Column="1" VerticalOptions="Center" ItemsSource="{Binding BackgroundSources, Mode=TwoWay}" 
+                    SelectedItem="{Binding BackgroundSource}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

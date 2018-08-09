@@ -1,4 +1,5 @@
 using System;
+using Windows10_FluentDesign_Sample.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,7 +12,7 @@ namespace Windows10_FluentDesign_Sample
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+			MainPage = new AcrylicMaterialPage();
 		}
 
 		protected override void OnStart ()
