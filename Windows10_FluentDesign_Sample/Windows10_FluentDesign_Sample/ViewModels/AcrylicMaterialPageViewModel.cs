@@ -10,6 +10,8 @@ namespace Windows10_FluentDesign_Sample.ViewModels
 {
     public class AcrylicMaterialPageViewModel : BaseViewModel
     {
+        bool _isAcrylicEnabled = true;
+
         Color _tintColor;
         int _tintColorR;
         int _tintColorG;
@@ -23,6 +25,13 @@ namespace Windows10_FluentDesign_Sample.ViewModels
         double _tintOpacity;
         BackgroundSource _backgroundSource;
         IList<BackgroundSource> _backgroundSources;
+
+
+        public bool IsAcrylicEnabled
+        {
+            get { return _isAcrylicEnabled; }
+            set { SetProperty(ref _isAcrylicEnabled, value); }
+        }
 
         public int TintColorR
         {

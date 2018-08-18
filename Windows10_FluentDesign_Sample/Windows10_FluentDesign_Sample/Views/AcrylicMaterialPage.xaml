@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:effects="clr-namespace:Windows10_FluentDesign_Sample.Effects"
-             xmlns:converters="clr-namespace:Windows10_FluentDesign_Sample.BindingConverters"
+             xmlns:converters="clr-namespace:Windows10_FluentDesign_Sample.Converters"
              xmlns:behaviors="clr-namespace:Windows10_FluentDesign_Sample.Behaviors"
-             xmlns:customcontrols="clr-namespace:Windows10_FluentDesign_Sample.CustomControls"
              x:Class="Windows10_FluentDesign_Sample.Views.AcrylicMaterialPage">
-    <Grid  ColumnSpacing="20">
+    
+    <Grid x:Name="container" ColumnSpacing="35" Padding="25">
         <Grid.Resources>
             <ResourceDictionary>
                 <Style TargetType="Label">
@@ -22,6 +22,7 @@
                     <Setter Property="WidthRequest" Value="25"/>
                     <Setter Property="HeightRequest" Value="25"/>
                 </Style>
+                <converters:BooleanNegationConverter x:Key="booleanNegator"/>
             </ResourceDictionary>
         </Grid.Resources>
 
@@ -36,18 +37,27 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <BoxView Grid.RowSpan="3" Grid.ColumnSpan="2"
+        <!--Acrylic tint for the screen-->
+        <BoxView Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="-25"
                  effects:AcrylicMaterial.BackgroundSource="HostBackdrop" 
-                 effects:AcrylicMaterial.FallbackColor="White" 
+                 effects:AcrylicMaterial.FallbackColor="WhiteSmoke" 
                  effects:AcrylicMaterial.TintColor="WhiteSmoke"
-                 effects:AcrylicMaterial.TintOpacity="0.7">
+                 effects:AcrylicMaterial.TintOpacity="0.8">
             <BoxView.Effects>
                 <effects:AcrylicMaterialEffect/>
             </BoxView.Effects>
+            <BoxView.Triggers>
+                <DataTrigger TargetType="BoxView"
+                                 Binding="{Binding Source={x:Reference backgroundSourcePicker}, Path=SelectedItem}"
+                                 Value="HostBackdrop">
+                    <Setter Property="IsVisible" Value="False"/>
+                </DataTrigger>
+            </BoxView.Triggers>
         </BoxView>
 
-        <Grid x:Name="image" Grid.Row="1" RowSpacing="25" Margin="25">
-            <Image Source="Assets/windows_10_light_and_mirror_background.png" Aspect="AspectFill">
+        <Grid x:Name="image" Grid.Row="1" RowSpacing="25">
+            <Label  Text="Disabled" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsAcrylicEnabled, Converter={StaticResource booleanNegator}}"/>
+            <Image Source="Assets/windows_10_light_and_mirror_background.png" Aspect="AspectFill" IsVisible="{Binding IsAcrylicEnabled}">
                 <Image.Triggers>
                     <DataTrigger TargetType="Image"
                                  Binding="{Binding Source={x:Reference backgroundSourcePicker}, Path=SelectedItem}"
@@ -57,18 +67,18 @@
                 </Image.Triggers>
             </Image>
             <BoxView Margin="15"
-                     IsVisible="{Binding Source={x:Reference enableSwitch}, Path= IsToggled}"
-                     effects:AcrylicMaterial.BackgroundSource="{Binding BackgroundSource, Mode=TwoWay}" 
-                     effects:AcrylicMaterial.FallbackColor="{Binding FallbackColor, Mode=TwoWay}" 
-                     effects:AcrylicMaterial.TintColor="{Binding TintColor, Mode=TwoWay}"
-                     effects:AcrylicMaterial.TintOpacity="{Binding TintOpacity, Mode=TwoWay}">
+                     IsVisible="{Binding IsAcrylicEnabled}"
+                     effects:AcrylicMaterial.BackgroundSource="{Binding BackgroundSource}" 
+                     effects:AcrylicMaterial.FallbackColor="{Binding FallbackColor}" 
+                     effects:AcrylicMaterial.TintColor="{Binding TintColor}"
+                     effects:AcrylicMaterial.TintOpacity="{Binding TintOpacity}">
                 <BoxView.Effects>
                     <effects:AcrylicMaterialEffect/>
                 </BoxView.Effects>
             </BoxView>
         </Grid>
 
-        <Grid x:Name="controlPanel" Grid.Row="1" Grid.Column="1" ColumnSpacing="10" Padding="25" Margin="25">
+        <Grid x:Name="controlPanel" Grid.Row="1" Grid.Column="1" ColumnSpacing="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -82,11 +92,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.ColumnSpan="3" Text="Control panel" HorizontalOptions="Center" FontSize="Medium" Margin="0,-15,0,15"/>
+            <Label Grid.Row="0" Grid.ColumnSpan="3" Text="Control panel" HorizontalOptions="Center" FontSize="Medium"/>
 
             <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="25">
                 <Label Text="Enable"/>
-                <Switch x:Name="enableSwitch" IsToggled="True"/>
+                <Switch IsToggled="{Binding IsAcrylicEnabled, Mode=TwoWay}"/>
             </StackLayout>
 
             <Label Grid.Row="2" Text="Tint opacity"/>

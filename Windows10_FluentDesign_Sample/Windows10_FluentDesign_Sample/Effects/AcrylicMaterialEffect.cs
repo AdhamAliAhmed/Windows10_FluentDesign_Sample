@@ -39,4 +39,12 @@ namespace Windows10_FluentDesign_Sample.Effects
         }
 
     }
+
+    public class RevealHighLightButtonEffect : RoutingEffect
+    {
+        public RevealHighLightButtonEffect() : base("Win10.RevealHighLightButtonEffect")
+        {
+
+        }
+    }
 }

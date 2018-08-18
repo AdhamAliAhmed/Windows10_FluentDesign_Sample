@@ -5,8 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -50,6 +52,16 @@ namespace Windows10_FluentDesign_Sample.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
+
+                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                titleBar.ButtonForegroundColor = Windows.UI.Colors.DarkGray;
+                titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+
+                // Hide default title bar.
+                var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+                coreTitleBar.ExtendViewIntoTitleBar = true;
+
+                FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
                 Xamarin.Forms.Forms.Init(e);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)

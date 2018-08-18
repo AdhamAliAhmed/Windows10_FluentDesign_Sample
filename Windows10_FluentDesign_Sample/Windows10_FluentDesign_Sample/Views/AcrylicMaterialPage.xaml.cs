@@ -17,5 +17,5 @@ namespace Windows10_FluentDesign_Sample.Views
 			InitializeComponent();
             BindingContext = new AcrylicMaterialPageViewModel();
 		}
-	}
+    }
 }

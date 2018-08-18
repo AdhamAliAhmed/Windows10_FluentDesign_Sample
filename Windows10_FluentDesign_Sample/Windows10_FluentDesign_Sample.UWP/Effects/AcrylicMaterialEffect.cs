@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows10_FluentDesign_Sample.Effects;
@@ -9,6 +8,7 @@ using Xamarin.Forms.Platform.UWP;
 
 [assembly: ResolutionGroupName("Win10")]
 [assembly: ExportEffect(typeof(Windows10_FluentDesign_Sample.UWP.Effects.AcrylicMaterialEffect), nameof(Windows10_FluentDesign_Sample.UWP.Effects.AcrylicMaterialEffect))]
+[assembly: ExportEffect(typeof(Windows10_FluentDesign_Sample.UWP.Effects.RevealHighLightButtonEffect), nameof(Windows10_FluentDesign_Sample.UWP.Effects.RevealHighLightButtonEffect))]
 namespace Windows10_FluentDesign_Sample.UWP.Effects
 {
     public class AcrylicMaterialEffect : PlatformEffect
@@ -27,10 +27,6 @@ namespace Windows10_FluentDesign_Sample.UWP.Effects
 
             UpdateControl();
 
-            //var brush = Windows.UI.Xaml.Application.Current.Resources["SystemControlAccentAcrylicWindowAccentMediumHighBrush"] as AcrylicBrush;
-            //var tintColor = brush.TintColor;
-            //var fallbackColor = brush.FallbackColor;
-            //var opacity = brush.TintOpacity;
         }
 
         protected override void OnElementPropertyChanged(PropertyChangedEventArgs args)
@@ -76,7 +72,7 @@ namespace Windows10_FluentDesign_Sample.UWP.Effects
             fallbackColor = AcrylicMaterial.GetFallbackColor(Element).ToUwpColor();
         }
 
-        private void UpdateControl()
+        void UpdateControl()
         {
             brush = new AcrylicBrush()
             {
@@ -98,6 +94,31 @@ namespace Windows10_FluentDesign_Sample.UWP.Effects
 
         protected override void OnDetached()
         {
+        }
+    }
+
+    public class RevealHighLightButtonEffect : PlatformEffect
+    {
+        protected override void OnAttached()
+        {
+            //var button = Control as Windows.UI.Xaml.Controls.Button;
+            var rect = Control as Windows.UI.Xaml.Shapes.Rectangle;
+
+            var accentColor = (Windows.UI.Color)Windows.UI.Xaml.Application.Current.Resources["SystemAccentColor"];
+            RevealBorderBrush borderBrush = new RevealBorderBrush() { TargetTheme = ApplicationTheme.Light, Color = accentColor, FallbackColor = accentColor };
+            RevealBackgroundBrush backgroundBrush = new RevealBackgroundBrush() { TargetTheme = ApplicationTheme.Light, Color = accentColor, FallbackColor = accentColor };
+
+            //button.Style = Windows.UI.Xaml.Application.Current.Resources["ButtonRevealStyle"] as Windows.UI.Xaml.Style;
+        }
+
+        private void Rect_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Hover");
+        }
+
+        protected override void OnDetached()
+        {
+            throw new NotImplementedException();
         }
     }
 }
